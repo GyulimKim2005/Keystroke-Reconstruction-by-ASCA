@@ -1,0 +1,20 @@
+﻿# data & outputs
+wav/
+m4a/
+out/
+*.wav
+*.m4a
+
+# external datasets / large folders
+136m-keystrokes/
+
+# python cache
+__pycache__/
+*.pyc
+
+# notebook checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
