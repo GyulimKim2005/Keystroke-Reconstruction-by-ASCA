@@ -27,7 +27,7 @@ def main():
 
     print(f"학습 시작! 장치: {device}")
 
-    for epoch in range(1, 101):
+    for epoch in range(1,501):
         model.train()
         total_loss = 0
         for batch in train_loader:
