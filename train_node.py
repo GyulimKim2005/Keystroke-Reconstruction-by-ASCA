@@ -3,10 +3,11 @@ import torch.optim as optim
 from torch_geometric.loader import DataLoader
 from torch.utils.data import random_split
 import os
-from GaAN_node import SimpleKeyboardGaAN 
+from GaAN_node import SimpleKeyboardGaAN
 
+# train_node.py는 dataset_stroke.py에서 준비된 그래프 데이터셋을 불러와 GaAN 모델을 학습하는 코드
 def main():
-    SAVE_PATH = "/content/drive/MyDrive/src/processed_dataset.pt"
+    SAVE_PATH = "./processed_dataset_stroke.pt"
     
     if not os.path.exists(SAVE_PATH):
         print("데이터 파일이 없습니다. dataset_node.py를 먼저 실행하세요.")
@@ -15,13 +16,14 @@ def main():
     # weights_only=False로 최신 버전 파이토치 에러 방지
     data_dict = torch.load(SAVE_PATH, weights_only=False)
     full_dataset = data_dict['dataset']
+    label_map = data_dict['label_map']
     
     train_size = int(0.8 * len(full_dataset))
     train_dataset, test_dataset = random_split(full_dataset, [train_size, len(full_dataset)-train_size])
     train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = SimpleKeyboardGaAN().to(device)
+    model = SimpleKeyboardGaAN(num_classes=len(label_map)).to(device)
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     criterion = torch.nn.CrossEntropyLoss()
 
@@ -34,8 +36,8 @@ def main():
             batch = batch.to(device)
             optimizer.zero_grad()
             
-            # 모델에 x, edge_index, 그리고 batch 정보를 같이 전달
-            out = model(batch.x, batch.edge_index, batch.batch)
+            # 모델에 x, edge_index, edge_attr 전달 (노드별 분류)
+            out = model(batch.x, batch.edge_index, batch.edge_attr)
             loss = criterion(out, batch.y)
             
             loss.backward()
