@@ -4,7 +4,7 @@ m4a/
 out/
 *.wav
 *.m4a
-
+*.npz
 # external datasets / large folders
 136m-keystrokes/
 
