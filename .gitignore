@@ -2,6 +2,7 @@
 wav/
 m4a/
 out/
+npz_sequences/
 *.wav
 *.m4a
 *.npz
@@ -18,3 +19,5 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+.venv/
