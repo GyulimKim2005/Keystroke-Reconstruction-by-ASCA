@@ -1,5 +1,6 @@
 ﻿# data & outputs
 wav/
+wav-old/
 m4a/
 out/
 npz_sequences/
